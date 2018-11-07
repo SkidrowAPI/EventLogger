@@ -1,0 +1,11 @@
+name: EventLogger
+main: ru.skidrowapi.eventlogger.EventLogger
+version: 1.0
+description: EventLogger
+commands:
+     eventlogger:
+        description: main command
+        usage: /eventlogger
+     eventblock:
+        description: logger event's of block
+        usage: /eventblock <eventname>
