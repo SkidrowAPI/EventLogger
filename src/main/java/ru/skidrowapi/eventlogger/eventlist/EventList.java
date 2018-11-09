@@ -4,22 +4,23 @@ import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventException;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
 import ru.skidrowapi.eventlogger.EventLogger;
-import ru.skidrowapi.eventlogger.logger.BlockLogger;
+import ru.skidrowapi.eventlogger.logger.Logger;
 
-
-public class Block implements Listener {
-    public Block(EventLogger instance) {
+public class EventList implements Listener {
+    public EventList(EventLogger instance) {
         plugin = instance;
     }
 
@@ -29,60 +30,60 @@ public class Block implements Listener {
     void onBlockBreakEvent(BlockBreakEvent e) {
         Player player = e.getPlayer();
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockBreakEvent(player, block);
+        Logger log=new Logger(plugin);
+        log.BlockBreakEvent(player, block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockBurnEvent(BlockBurnEvent e) {
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockBurnEvent(block);
+        Logger log=new Logger(plugin);
+        log.BlockBurnEvent(block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockCanBuildEvent(BlockCanBuildEvent e) {
         Material material = e.getMaterial();
         Boolean isBuildable = e.isBuildable();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockCanBuildEvent(material, isBuildable);
+        Logger log=new Logger(plugin);
+        log.BlockCanBuildEvent(material, isBuildable);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockDamageEvent(BlockDamageEvent e) {
         Player player = e.getPlayer();
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockDamageEvent(player, block);
+        Logger log=new Logger(plugin);
+        log.BlockDamageEvent(player, block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockDispenseEvent(BlockDispenseEvent e) {
         ItemStack item = e.getItem();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockDispenseEvent(item);
+        Logger log=new Logger(plugin);
+        log.BlockDispenseEvent(item);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockExpEvent(BlockExpEvent e) {
         Integer exp = e.getExpToDrop();
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockExpEvent(exp, block);
+        Logger log=new Logger(plugin);
+        log.BlockExpEvent(exp, block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockFadeEvent(BlockFadeEvent e) {
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockFadeEvent(block);
+        Logger log=new Logger(plugin);
+        log.BlockFadeEvent(block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockFormEvent(BlockFormEvent e) {
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockFormEvent(block);
+        Logger log=new Logger(plugin);
+        log.BlockFormEvent(block);
 
     }
 
@@ -90,55 +91,55 @@ public class Block implements Listener {
     void onBlockFromToEvent(BlockFromToEvent e) {
         BlockFace blockface = e.getFace();
         org.bukkit.block.Block block = e.getToBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockFromToEvent(block, blockface);
+        Logger log=new Logger(plugin);
+        log.BlockFromToEvent(block, blockface);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockGrowEvent(BlockGrowEvent e) {
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockGrowEvent(block);
+        Logger log=new Logger(plugin);
+        log.BlockGrowEvent(block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockIgniteEvent(BlockIgniteEvent e) {
         BlockIgniteEvent.IgniteCause cause = e.getCause();
         org.bukkit.block.Block block = e.getIgnitingBlock();
-        Entity entity = e.getIgnitingEntity();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockIgniteEvent(block, entity, cause);
+        org.bukkit.entity.Entity entity = e.getIgnitingEntity();
+        Logger log=new Logger(plugin);
+        log.BlockIgniteEvent(block, entity, cause);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockPhysicsEvent(BlockPhysicsEvent e) {
         Material material = e.getChangedType();
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockPhysicsEvent(block, material);
+        Logger log=new Logger(plugin);
+        log.BlockPhysicsEvent(block, material);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockPistonEvent(BlockPistonEvent e) {
         org.bukkit.block.Block block = e.getBlock();
         BlockFace blockface = e.getDirection();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockPistonEvent(block, blockface);
+        Logger log=new Logger(plugin);
+        log.BlockPistonEvent(block, blockface);
 
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockPistonExtendEvent(BlockPistonExtendEvent e) {
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockPistonExtendEvent(block);
+        Logger log=new Logger(plugin);
+        log.BlockPistonExtendEvent(block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockPistonRetractEvent(BlockPistonRetractEvent e) {
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockPistonRetractEvent(block);
+        Logger log=new Logger(plugin);
+        log.BlockPistonRetractEvent(block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -146,8 +147,8 @@ public class Block implements Listener {
         Player player = e.getPlayer();
         org.bukkit.block.Block block = e.getBlockPlaced();
         Boolean isBuildable = e.canBuild();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockPlaceEvent(player, block, isBuildable);
+        Logger log=new Logger(plugin);
+        log.BlockPlaceEvent(player, block, isBuildable);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -155,16 +156,16 @@ public class Block implements Listener {
         org.bukkit.block.Block block = e.getBlock();
         Integer newcur = e.getNewCurrent();
         Integer oldcur = e.getOldCurrent();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockRedstoneEvent(block, oldcur, newcur);
+        Logger log=new Logger(plugin);
+        log.BlockRedstoneEvent(block, oldcur, newcur);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onBlockSpreadEvent(BlockSpreadEvent e) {
         org.bukkit.block.Block block = e.getBlock();
         org.bukkit.block.Block blocksource = e.getSource();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockSpreadEvent(block, blocksource);
+        Logger log=new Logger(plugin);
+        log.BlockSpreadEvent(block, blocksource);
 
     }
 
@@ -172,15 +173,15 @@ public class Block implements Listener {
     void onEntityBlockFormEvent(EntityBlockFormEvent e) {
         Entity entity = e.getEntity();
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.EntityBlockFormEvent(block, entity);
+        Logger log=new Logger(plugin);
+        log.EntityBlockFormEvent(block, entity);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onLeavesDecayEvent(LeavesDecayEvent e) {
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.LeavesDecayEvent(block);
+        Logger log=new Logger(plugin);
+        log.LeavesDecayEvent(block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -188,16 +189,16 @@ public class Block implements Listener {
         org.bukkit.block.Block block = e.getBlock();
         Note note = e.getNote();
         Instrument instrument = e.getInstrument();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.NotePlayEvent(block, note, instrument);
+        Logger log=new Logger(plugin);
+        log.NotePlayEvent(block, note, instrument);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     void onSignChangeEvent(SignChangeEvent e) {
         Player player = e.getPlayer();
         org.bukkit.block.Block block = e.getBlock();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.SignChangeEvent(player, block);
+        Logger log=new Logger(plugin);
+        log.SignChangeEvent(player, block);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -205,7 +206,52 @@ public class Block implements Listener {
         org.bukkit.block.Block block = e.getBlock();
         Player player = e.getPlayer();
         BlockState bs = e.getBlockReplacedState();
-        BlockLogger bl = new BlockLogger(plugin);
-        bl.BlockMultiPlaceEvent(player, block, bs);
+        Logger log=new Logger(plugin);
+        log.BlockMultiPlaceEvent(player, block, bs);
     }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    void onCreatureSpawnEvent(CreatureSpawnEvent e){
+        LivingEntity entity=e.getEntity();
+        Location loc=e.getLocation();
+        Logger log=new Logger(plugin);
+        log.CreatureSpawnEvent(entity,loc);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    void onCreeperPowerEvent(CreeperPowerEvent e){
+        LivingEntity entity=e.getEntity();
+        Location loc=entity.getLocation();
+        Logger log=new Logger(plugin);
+        log.CreeperPowerEvent(entity,loc);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    void onEntityBreakDoorEvent (EntityBreakDoorEvent e){
+        LivingEntity entity=e.getEntity();
+        Location loc=entity.getLocation();
+        Logger log=new Logger(plugin);
+        log.EntityBreakDoorEvent(entity,loc);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    void onEntityChangeBlockEvent(EntityChangeBlockEvent e){
+        Material matd=e.getBlock().getType();
+        Material matt=e.getTo();
+        Location loc=e.getBlock().getLocation();
+        Logger log=new Logger(plugin);
+        log.EntityChangeBlockEvent(matd,matt,loc);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    void onEntityCombustByBlockEvent(EntityCombustByBlockEvent e){
+        org.bukkit.entity.Entity entity=e.getEntity();
+        Block b=e.getCombuster();
+        Location loc=b.getLocation();
+        Logger log=new Logger(plugin);
+        log.EntityCombustByBlockEvent(entity,b,loc);
+    }
+
+
 }
+

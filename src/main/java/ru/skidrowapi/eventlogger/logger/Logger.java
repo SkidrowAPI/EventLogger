@@ -1,6 +1,7 @@
 package ru.skidrowapi.eventlogger.logger;
 
 import org.bukkit.Instrument;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Note;
 import org.bukkit.block.Block;
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.inventory.ItemStack;
 import ru.skidrowapi.eventlogger.EventLogger;
-import ru.skidrowapi.eventlogger.map.MapBlock;
+import ru.skidrowapi.eventlogger.map.MapEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,23 +23,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class BlockLogger {
-    public BlockLogger(EventLogger instance) {
+public class Logger {
+    public Logger(EventLogger instance) {
         plugin = instance;
-        getMapBlock();
-        loggerblock();
+        getMapEvent();
+        logger();
     }
 
-    private static Map<String, Boolean> eventblock = new HashMap<>();
+    private static Map<String, Boolean> event = new HashMap<>();
     private String info;
     private EventLogger plugin;
     private String time;
 
     public void BlockBreakEvent(Player p, Block b) {
-        if (eventblock.get("BlockBreakEvent") == true) {
+        if (event.get("BlockBreakEvent") == true) {
             info = "@BlockBreakEvent: " + "player-" + p.getName() + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -47,10 +48,10 @@ public class BlockLogger {
     }
 
     public void BlockBurnEvent(Block b) {
-        if (eventblock.get("BlockBurnEvent") == true) {
+        if (event.get("BlockBurnEvent") == true) {
             info = "@BlockBurnEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -59,10 +60,10 @@ public class BlockLogger {
     }
 
     public void BlockCanBuildEvent(Material m, Boolean b) {
-        if (eventblock.get("BlockCanBuildEvent") == true) {
+        if (event.get("BlockCanBuildEvent") == true) {
             info = "@BlockCanBuildEvent: " + "material-" + m + ", isBuildable-" + b;
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -71,10 +72,10 @@ public class BlockLogger {
     }
 
     public void BlockDamageEvent(Player p, Block b) {
-        if (eventblock.get("BlockDamageEvent") == true) {
+        if (event.get("BlockDamageEvent") == true) {
             info = "@BlockDamageEvent: " + "player-" + p.getName() + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -83,10 +84,10 @@ public class BlockLogger {
     }
 
     public void BlockDispenseEvent(ItemStack i) {
-        if (eventblock.get("BlockDispenseEvent") == true) {
+        if (event.get("BlockDispenseEvent") == true) {
             info = "@BlockDispenseEvent: " + "drop item-" + i;
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -95,10 +96,10 @@ public class BlockLogger {
     }
 
     public void BlockExpEvent(Integer exp, Block b) {
-        if (eventblock.get("BlockExpEvent") == true) {
+        if (event.get("BlockExpEvent") == true) {
             info = "@BlockExpEvent: " + "exp-" + exp + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -107,10 +108,10 @@ public class BlockLogger {
     }
 
     public void BlockFadeEvent(Block b) {
-        if (eventblock.get("BlockFadeEvent") == true) {
+        if (event.get("BlockFadeEvent") == true) {
             info = "@BlockFadeEvent: " + " block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -119,10 +120,10 @@ public class BlockLogger {
     }
 
     public void BlockFormEvent(Block b) {
-        if (eventblock.get("BlockFormEvent") == true) {
+        if (event.get("BlockFormEvent") == true) {
             info = "@BlockFormEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -132,10 +133,10 @@ public class BlockLogger {
     }
 
     public void BlockFromToEvent(Block b, BlockFace bf) {
-        if (eventblock.get("BlockFromToEvent") == true) {
+        if (event.get("BlockFromToEvent") == true) {
             info = "@BlockFromToEvent: " + "blockface-" + bf + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -145,10 +146,10 @@ public class BlockLogger {
     }
 
     public void BlockGrowEvent(Block b) {
-        if (eventblock.get("BlockGrowEvent") == true) {
+        if (event.get("BlockGrowEvent") == true) {
             info = "@BlockGrowEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -157,10 +158,10 @@ public class BlockLogger {
     }
 
     public void BlockIgniteEvent(Block b, Entity e, BlockIgniteEvent.IgniteCause c) {
-        if (eventblock.get("BlockIgniteEvent")) {
+        if (event.get("BlockIgniteEvent")) {
             info = "@BlockIgniteEvent: " + "cause-" + c + ", entity-" + e + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -169,10 +170,10 @@ public class BlockLogger {
     }
 
     public void BlockPhysicsEvent(Block b, Material m) {
-        if (eventblock.get("BlockPhysicsEvent") == true) {
+        if (event.get("BlockPhysicsEvent") == true) {
             info = "@BlockPhysicsEvent: " + "material-" + m + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -181,10 +182,10 @@ public class BlockLogger {
     }
 
     public void BlockPistonEvent(Block b, BlockFace bf) {
-        if (eventblock.get("BlockPistonEvent") == true) {
+        if (event.get("BlockPistonEvent") == true) {
             info = "@BlockPistonEvent: " + "blockface-" + bf + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -194,10 +195,10 @@ public class BlockLogger {
     }
 
     public void BlockPistonExtendEvent(Block b) {
-        if (eventblock.get("BlockPistonExtendEvent") == true) {
+        if (event.get("BlockPistonExtendEvent") == true) {
             info = "@BlockPistonExtendEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -206,10 +207,10 @@ public class BlockLogger {
     }
 
     public void BlockPistonRetractEvent(Block b) {
-        if (eventblock.get("BlockPistonRetractEvent") == true) {
+        if (event.get("BlockPistonRetractEvent") == true) {
             info = "@BlockPistonRetractEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -218,10 +219,10 @@ public class BlockLogger {
     }
 
     public void BlockPlaceEvent(Player p, Block b, Boolean isBuildable) {
-        if (eventblock.get("BlockPlaceEvent") == true) {
+        if (event.get("BlockPlaceEvent") == true) {
             info = "@BlockPlaceEvent: " + "player-" + p.getName() + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")" + " isBuildable-" + isBuildable;
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -230,10 +231,10 @@ public class BlockLogger {
     }
 
     public void BlockRedstoneEvent(Block b, Integer oldcur, Integer newcur) {
-        if (eventblock.get("BlockRedstoneEvent") == true) {
+        if (event.get("BlockRedstoneEvent") == true) {
             info = "@BlockRedstoneEvent: " + " block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")" + ", oldcurrent-" + oldcur + ", newcurrent-" + newcur;
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -242,10 +243,10 @@ public class BlockLogger {
     }
 
     public void BlockSpreadEvent(Block b, Block bs) {
-        if (eventblock.get("BlockSpreadEvent") == true) {
+        if (event.get("BlockSpreadEvent") == true) {
             info = "@BlockSpreadEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")" + ", " + "blocksource-" + bs.getType() + " (" + bs.getX() + " " + bs.getY() + " " + bs.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -255,10 +256,10 @@ public class BlockLogger {
     }
 
     public void EntityBlockFormEvent(Block b, Entity e) {
-        if (eventblock.get("EntityBlockFormEvent") == true) {
+        if (event.get("EntityBlockFormEvent") == true) {
             info = "@EntityBlockFormEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")" + ", entity-" + e.getType();
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -268,10 +269,10 @@ public class BlockLogger {
     }
 
     public void LeavesDecayEvent(Block b) {
-        if (eventblock.get("LeavesDecayEvent") == true) {
+        if (event.get("LeavesDecayEvent") == true) {
             info = "@LeavesDecayEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -280,10 +281,10 @@ public class BlockLogger {
     }
 
     public void NotePlayEvent(Block b, Note n, Instrument inst) {
-        if (eventblock.get("NotePlayEvent") == true) {
+        if (event.get("NotePlayEvent") == true) {
             info = "@NotePlayEvent: " + "block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")" + ", note-" + n + ", instrument-" + inst;
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -292,10 +293,10 @@ public class BlockLogger {
     }
 
     public void SignChangeEvent(Player p, Block b) {
-        if (eventblock.get("SignChangeEvent") == true) {
+        if (event.get("SignChangeEvent") == true) {
             info = "@SignChangeEvent: " + "player-" + p.getName() + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")";
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
@@ -304,23 +305,75 @@ public class BlockLogger {
     }
 
     public void BlockMultiPlaceEvent(Player p, Block b, BlockState bs) {
-        if (eventblock.get("BlockMultiPlaceEvent") == true) {
+        if (event.get("BlockMultiPlaceEvent") == true) {
             info = "@BlockMultiPlaceEvent: " + "player-" + p.getName() + ", block-" + b.getType() + " (" + b.getX() + " " + b.getY() + " " + b.getZ() + ")" + ", blockstate-" + bs;
             if (plugin.getConfig().getBoolean("file") == true) {
-                saveloggerblock();
+                savelogger();
             }
             if (plugin.getConfig().getBoolean("console") == true) {
                 plugin.getLogger().info(info);
             }
         }
     }
-
-    public void getMapBlock() {
-        eventblock = MapBlock.getMapBlock();
+    //----------------------------------------------------------------------------------------------------------------\\
+    public void CreatureSpawnEvent(Entity e, Location loc) {
+        if (event.get("CreatureSpawnEvent") == true) {
+            info = "@CreatureSpawnEvent: " + "entity-" + e.getType() + " (" + loc.getX() + " " + loc.getY() + " " + loc.getZ() + ")";
+            if (plugin.getConfig().getBoolean("file") == true) {
+                savelogger();
+            }
+            if (plugin.getConfig().getBoolean("console") == true) {
+                plugin.getLogger().info(info);
+            }
+        }
     }
-
-    public void loggerblock() {
-        File log = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "loggerblock.yml");
+    public void CreeperPowerEvent(Entity e, Location loc) {
+        if (event.get("CreeperPowerEvent") == true) {
+            info = "@CreeperPowerEvent: " + "entity-" + e.getType() + " (" + loc.getX() + " " + loc.getY() + " " + loc.getZ() + ")";
+            if (plugin.getConfig().getBoolean("file") == true) {
+                savelogger();
+            }
+            if (plugin.getConfig().getBoolean("console") == true) {
+                plugin.getLogger().info(info);
+            }
+        }
+    }
+    public void EntityBreakDoorEvent(Entity e, Location loc) {
+        if (event.get("EntityBreakDoorEvent") == true) {
+            info = "@EntityBreakDoorEvent: " + "entity-" + e.getType() + " (" + loc.getX() + " " + loc.getY() + " " + loc.getZ() + ")";
+            if (plugin.getConfig().getBoolean("file") == true) {
+                savelogger();
+            }
+            if (plugin.getConfig().getBoolean("console") == true) {
+                plugin.getLogger().info(info);
+            }
+        }
+    }
+    public void EntityChangeBlockEvent(Material matd,Material matt, Location loc) {
+        if (event.get("EntityChangeBlockEvent") == true) {
+            info = "@EntityChangeBlockEvent: " + "entity-" + matd+" (to-"+matt+")" + " (" + loc.getX() + " " + loc.getY() + " " + loc.getZ() + ")";
+            if (plugin.getConfig().getBoolean("file") == true) {
+                savelogger();
+            }
+            if (plugin.getConfig().getBoolean("console") == true) {
+                plugin.getLogger().info(info);
+            }
+        }
+    }
+    public void EntityCombustByBlockEvent(Entity e, Block b, Location loc) {
+        if (event.get("EntityCombustByBlockEvent") == true) {
+            info = "@EntityCombustByBlockEvent: " + "entity-" + e+" (block-"+b.getType()+")" + " (" + loc.getX() + " " + loc.getY() + " " + loc.getZ() + ")";
+            if (plugin.getConfig().getBoolean("file") == true) {
+                savelogger();
+            }
+            if (plugin.getConfig().getBoolean("console") == true) {
+                plugin.getLogger().info(info);
+            }
+        }
+    }
+    //----------------------------------------------------------------------------------------------------------------\\
+    public void logger() {
+        File log = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "logger.yml");
         if (!log.exists()) {
             FileConfiguration logcon = new YamlConfiguration();
             try {
@@ -329,12 +382,10 @@ public class BlockLogger {
                 e.printStackTrace();
             }
         }
-        FileConfiguration logger = YamlConfiguration.loadConfiguration(log);
 
     }
-
-    public void saveloggerblock() {
-        File log = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "loggerblock.yml");
+    public void savelogger() {
+        File log = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "logger.yml");
         FileConfiguration logger = YamlConfiguration.loadConfiguration(log);
         Calendar cal = Calendar.getInstance();
         time = String.valueOf(cal.getTime());
@@ -345,11 +396,13 @@ public class BlockLogger {
             e.printStackTrace();
         }
     }
-
-    public void deleteloggerblock() {
-        File log = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "loggerblock.yml");
+    public void deletelogger() {
+        File log = new File(plugin.getDataFolder().getAbsolutePath() + File.separator + "logger.yml");
         log.delete();
 
+    }
+    public void getMapEvent() {
+        event = MapEvent.getMapEvent();
     }
 
 }

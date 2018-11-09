@@ -2,11 +2,10 @@ package ru.skidrowapi.eventlogger;
 
 
 import org.bukkit.plugin.java.JavaPlugin;
-import ru.skidrowapi.eventlogger.executor.ExecutorBlock;
-import ru.skidrowapi.eventlogger.eventlist.Block;
-import ru.skidrowapi.eventlogger.executor.ExecutorLogger;
-import ru.skidrowapi.eventlogger.logger.BlockLogger;
-import ru.skidrowapi.eventlogger.map.MapBlock;
+import ru.skidrowapi.eventlogger.eventlist.EventList;
+import ru.skidrowapi.eventlogger.executor.Executor;
+import ru.skidrowapi.eventlogger.logger.Logger;
+import ru.skidrowapi.eventlogger.map.MapEvent;
 
 
 public class EventLogger extends JavaPlugin {
@@ -14,24 +13,22 @@ public class EventLogger extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        MapBlock mapBlock = new MapBlock(plugin);
-        mapBlock.MapBlock();
+        MapEvent map = new MapEvent(plugin);
+        map.MapEvent();
         ListEvent listEvent = new ListEvent(plugin);
         listEvent.listevent();
-        ExecutorBlock exb = new ExecutorBlock(plugin);
-        ExecutorLogger ExecutorLogger = new ExecutorLogger(plugin);
-        getServer().getPluginManager().registerEvents(new Block(this), this);
+        Executor ex=new Executor(plugin);
+        getServer().getPluginManager().registerEvents(new EventList(this), this);
         plugin.getLogger().info("logger on console is " + plugin.getConfig().getBoolean("console"));
         plugin.getLogger().info("logger on file is " + plugin.getConfig().getBoolean("file"));
         plugin.getLogger().info("help in command " + "/eventlogger");
-        getCommand("eventblock").setExecutor(exb);
-        getCommand("eventlogger").setExecutor(ExecutorLogger);
+        getCommand("eventlogger").setExecutor(ex);
     }
 
     @Override
     public void onDisable() {
+        Logger logger = new Logger(plugin);
+        logger.deletelogger();
         plugin.getLogger().info("Logger file delete!");
-        BlockLogger blockLogger = new BlockLogger(plugin);
-        blockLogger.deleteloggerblock();
     }
 }
